@@ -41,6 +41,16 @@ async function main() {
        res.send("Added!")
     });
 
+    // Delete Request
+    app.delete("/articles", async (req, res) => {
+        try {
+            await Article.deleteMany()
+        .then(deletedArticles => { res.send("Successfully deleted")});
+        } catch (error) {
+            console.log(error);
+        }
+        
+    });
 
     //Server Check
     app.listen(3000, () => {
