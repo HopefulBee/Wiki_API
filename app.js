@@ -22,12 +22,6 @@ async function main() {
 
     const Article = mongoose.model('Article', articlesSchema);
 
-    const lesson = new Article({
-        title: "DOM",
-        content: "Document Object Model. It connects web pages to scripts or programming languages by representing the structure of a document—such as the HTML representing a web page—in memory. Usually it refers to JavaScript, even though modeling HTML, SVG, or XML documents as objects are not part of the core JavaScript language."
-    });
-
-    // await lesson.save();
     app.get("/articles", async (req, res) => {
         try {
             await Article.find({})
@@ -36,6 +30,18 @@ async function main() {
             console.log(error);
         }
     });
+
+    app.post("/articles", async (req, res) => {
+       const topic = new Article ({
+            title: req.body.title,
+            content: req.body.content
+       });
+
+       await topic.save();
+       res.send("Added!")
+    });
+
+
     //Server Check
     app.listen(3000, () => {
         console.log("Server is Running!");
