@@ -37,8 +37,7 @@ async function main() {
                 title: req.body.title,
                 content: req.body.content
             });
-
-            // await topic.save();
+            await topic.save();
             res.send("Added!")
         })
         .delete(async (req, res) => {
@@ -71,9 +70,34 @@ async function main() {
                     if (updatedArticle) {
                         res.send("Updated Successfully");
                     } else {
-                        res.send("No updates made")
+                        res.send("No updates made");
                     }
                 });
+        })
+        
+        .patch( async (req, res) => {
+            let query = req.params.articleTitle;
+            await Article.findOneAndUpdate(
+                {title: query},
+                {$set: req.body}
+                ).then(patchedArticle => { 
+                    if (!patchedArticle) {
+                        res.send("Patch Error");
+                    } else {
+                        res.send("Patched successfully");
+                    }
+                });
+        })
+        
+        .delete(async (req, res) => {
+            let query = req.params.articleTitle;
+            await Article.deleteOne({title: query}).then(deletedArticle => {
+                if (!deletedArticle) {
+                    res.send("Not Deleted!");
+                } else {
+                    res.send("Deleted");
+                }
+            });
         });
 
     //Server Check
